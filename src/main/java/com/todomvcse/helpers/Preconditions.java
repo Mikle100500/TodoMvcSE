@@ -1,10 +1,12 @@
 package com.todomvcse.helpers;
 
+import org.openqa.selenium.JavascriptExecutor;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.WebDriverRunner.url;
+import static com.todomvcse.core.ConciseAPI.getDriver;
+import static com.todomvcse.core.ConciseAPI.open;
 
 public class Preconditions {
 
@@ -26,7 +28,9 @@ public class Preconditions {
 
     public void prepare() {
 
-        if (!url().equals(filter)) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        if (getDriver().getCurrentUrl().equals(filter)) {
             open(filter);
         }
 
@@ -45,8 +49,8 @@ public class Preconditions {
                 + queryToExecute.substring(0, queryToExecute.length() - 1)
                 + "]')";
 
-        executeJavaScript(queryToExecute);
-        executeJavaScript("location.reload()");
+        js.executeScript(queryToExecute);
+        js.executeScript("location.reload()");
     }
 
     public static class PreconditionBuilder {

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.mail.core.Wrappers.elementExceptionsCatcher;
+import static com.todomvcse.core.Wrappers.elementExceptionsCatcher;
 
 public class CustomConditions {
 

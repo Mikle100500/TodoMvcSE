@@ -1,12 +1,13 @@
 package com.todomvcse;
 
-import com.todomvc.pages.testpage.TaskManagerPage;
+import com.todomvcse.page.TaskManagerPage;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 
-import static com.todomvc.helpers.Preconditions.precondition;
+import static com.todomvcse.helpers.Preconditions.precondition;
 
-public class AtAllFilterTest {
+
+public class AtAllFilterTest extends BaseTest{
 
     private TaskManagerPage page = new TaskManagerPage();
 
@@ -25,7 +26,7 @@ public class AtAllFilterTest {
 
         precondition().activeTasks("a").atAllFilter().prepare();
 
-        page.startEdit("a", "a edited").pressEnter();
+        page.startEdit("a", "a edited").sendKeys(Keys.ENTER);
         page.assertTasks("a edited");
         page.assertItemsLeft(1);
     }
@@ -114,7 +115,7 @@ public class AtAllFilterTest {
 
         precondition().activeTasks("a").atAllFilter().prepare();
 
-        page.startEdit("a", "a edited").pressTab();
+        page.startEdit("a", "a edited").sendKeys(Keys.TAB);
         page.assertTasks("a edited");
         page.assertItemsLeft(1);
     }

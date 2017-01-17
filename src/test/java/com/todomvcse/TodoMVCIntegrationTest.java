@@ -1,12 +1,11 @@
 package com.todomvcse;
 
-import com.todomvc.pages.testpage.TaskManagerPage;
+import com.todomvcse.page.TaskManagerPage;
 import org.junit.Test;
 
-import static com.todomvc.helpers.Preconditions.precondition;
+import static com.todomvcse.helpers.Preconditions.precondition;
 
-
-public class TodoMVCIntegrationTest {
+public class TodoMVCIntegrationTest extends BaseTest{
 
     private TaskManagerPage page = new TaskManagerPage();
 

@@ -1,10 +1,10 @@
 package com.todomvcse;
 
-import com.todomvc.pages.testpage.TaskManagerPage;
+import com.todomvcse.page.TaskManagerPage;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 
-import static com.todomvc.helpers.Preconditions.precondition;
+import static com.todomvcse.helpers.Preconditions.precondition;
 
 
 public class AtActiveFilterTest {
@@ -26,7 +26,7 @@ public class AtActiveFilterTest {
 
         precondition().activeTasks("b", "a").atActiveFilter().prepare();
 
-        page.startEdit("a", "a edited").pressEnter();
+        page.startEdit("a", "a edited").sendKeys(Keys.ENTER);
         page.assertVisibleTasks("b", "a edited");
         page.assertItemsLeft(2);
     }
