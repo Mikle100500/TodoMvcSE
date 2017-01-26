@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static com.todomvcse.helpers.Preconditions.precondition;
 
-public class TodoMVCIntegrationTest extends BaseTest{
+public class TodoMVCIntegrationTest extends BaseTest {
 
     private TaskManagerPage page = new TaskManagerPage();
 
@@ -15,7 +15,7 @@ public class TodoMVCIntegrationTest extends BaseTest{
         precondition().prepare();
 
         page.create("a");
-        page.assertTasks("a");
+        page.assertVisibleTasks("a");
 
         page.filterActive();
         page.assertVisibleTasks("a");
@@ -37,6 +37,4 @@ public class TodoMVCIntegrationTest extends BaseTest{
         page.delete("b");
         page.assertNoVisibleTasks();
     }
-
-
 }

@@ -4,10 +4,11 @@ import com.todomvcse.page.TaskManagerPage;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 
+import static com.todomvcse.core.ConciseAPI.$;
 import static com.todomvcse.helpers.Preconditions.precondition;
 
 
-public class AtActiveFilterTest {
+public class AtActiveFilterTest extends BaseTest {
 
     private TaskManagerPage page = new TaskManagerPage();
 
@@ -77,7 +78,7 @@ public class AtActiveFilterTest {
         precondition().activeTasks("a").completedTasks("b").atActiveFilter().prepare();
 
         page.filterAll();
-        page.assertTasks("a", "b");
+        page.assertVisibleTasks("a", "b");
         page.assertItemsLeft(1);
     }
 
@@ -107,7 +108,7 @@ public class AtActiveFilterTest {
         precondition().activeTasks("a").atActiveFilter().prepare();
 
         page.startEdit("a", "a edited");
-        page.newTodo.click();
+        $("#new-todo").click();
         page.assertVisibleTasks("a edited");
         page.assertItemsLeft(1);
     }

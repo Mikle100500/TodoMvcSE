@@ -14,35 +14,38 @@ import static com.todomvcse.core.Wrappers.elementExceptionsCatcher;
 
 public class CustomConditions {
 
-    public static ExpectedCondition<WebElement> nthElementHasText(final By locator, final int index
+    public static ExpectedCondition<WebElement> elementHasText(
+            final By elementsLocator
             , final String expectedText) {
 
         return elementExceptionsCatcher(new ExpectedCondition<WebElement>() {
 
-            private WebElement element;
-            private String actualText;
+            private List<WebElement> elements;
 
             public WebElement apply(WebDriver driver) {
-
-                element = driver.findElements(locator).get(index);
-                actualText = element.getText();
-                return actualText.contains(expectedText) ? element : null;
+                elements = driver.findElements(elementsLocator);
+                for (WebElement element : elements) {
+                    if (element.getText().equals(expectedText)) {
+                        return element;
+                    }
+                }
+                return null;
             }
 
             public String toString() {
-                return String.format("\nText of %s element,"
-                                + "\nfound with locator - %s"
+                return String.format("\nText of elements,"
+                                + "\nfound with elementsLocator - %s"
                                 + "\nShould be: %s"
-                                + "\nActual text is: %s\n"
-                        , index
-                        , locator.toString()
-                        , expectedText
-                        , actualText);
+                                + "\nActual: text not found\n"
+                        , elementsLocator.toString()
+                        , expectedText);
             }
         });
     }
 
-    public static ExpectedCondition<List<WebElement>> texts(final By locator, final String... texts) {
+    public static ExpectedCondition<List<WebElement>> visibleTextOf(
+            final By locator
+            , final String... texts) {
 
         return elementExceptionsCatcher(new ExpectedCondition<List<WebElement>>() {
 
@@ -54,7 +57,10 @@ public class CustomConditions {
                 actualTexts.clear();
                 elements = driver.findElements(locator);
                 for (WebElement element : elements) {
-                    actualTexts.add(element.getText());
+                    if (!element.getText().equals("")) {    // костылёк :) - наш локатор почему-то
+                        // при одной таске выгребает еще 2-ю пустую стрингу :(
+                        actualTexts.add(element.getText());
+                    }
                 }
 
                 if (actualTexts.size() != texts.length) {
@@ -78,5 +84,49 @@ public class CustomConditions {
                         , actualTexts);
             }
         });
+    }
+
+    public static ExpectedCondition<WebElement> waitParentElement(
+            final By parentLocator
+            , final String text
+            , final By innerLocator) {
+
+        return elementExceptionsCatcher(new ExpectedCondition<WebElement>() {
+
+            public WebElement apply(WebDriver driver) {
+
+                List<WebElement> parentElements = driver.findElements(parentLocator);
+
+                for (WebElement parentElement : parentElements) {
+                    if (parentElement.findElement(innerLocator) != null && parentElement.getText().equals(text)) {
+                        return parentElement.findElement(innerLocator);
+                    }
+                }
+                return null;
+            }
+        });
+
+        // TODO: 26.01.2017 override toString()
+    }
+
+    public static ExpectedCondition<List<WebElement>> sizeOfVisible(final By locator) {
+
+        return elementExceptionsCatcher(new ExpectedCondition<List<WebElement>>() {
+
+            public List<WebElement> apply(WebDriver driver) {
+
+                List<WebElement> elements = driver.findElements(locator);
+                List<WebElement> visibleElements = new ArrayList<>();
+
+                for (WebElement element : elements) {
+                    if (element.isDisplayed()) {
+                        visibleElements.add(element);
+                    }
+                }
+                return visibleElements;
+            }
+        });
+
+        // TODO: 26.01.2017 override toString()
     }
 }

@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static com.todomvcse.core.CustomConditions.elementHasText;
+import static com.todomvcse.core.CustomConditions.waitParentElement;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class ConciseAPI {
@@ -20,7 +22,9 @@ public class ConciseAPI {
         ConciseAPI.driver = driver;
     }
 
-    public static void open(String url){ getDriver().get(url);}
+    public static void open(String url) {
+        getDriver().get(url);
+    }
 
     public static WebElement $(By locator) {
         return assertThat(visibilityOfElementLocated(locator));
@@ -30,19 +34,19 @@ public class ConciseAPI {
         return $(By.cssSelector(cssSelector));
     }
 
-    public static By byText(String text) {
-        return By.xpath(String.format("//*[contains(text(), '%s')]", text));
+    public static WebElement $(By elementsLocator, String text) {
+        return assertThat(elementHasText(elementsLocator, text));
     }
 
-    public static By byTitle(String title) {
-        return By.cssSelector(String.format("[title='%s']", title));
+    public static WebElement $(By parentLocator, String text, By innerLocator) {
+        return assertThat(waitParentElement(parentLocator, text, innerLocator));
     }
 
-    public static  <V> V assertThat(ExpectedCondition<V> condition, int timeout) {
+    public static <V> V assertThat(ExpectedCondition<V> condition, int timeout) {
         return (new WebDriverWait(driver, timeout)).until(condition);
     }
 
-    public static  <V> V assertThat(ExpectedCondition<V> condition) {
+    public static <V> V assertThat(ExpectedCondition<V> condition) {
         return assertThat(condition, Configuration.timeout);
     }
 }

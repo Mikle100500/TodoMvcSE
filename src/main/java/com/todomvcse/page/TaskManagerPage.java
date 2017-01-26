@@ -3,26 +3,22 @@ package com.todomvcse.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
-import java.util.List;
-
-import static com.todomvcse.core.ConciseAPI.$;
+import static com.todomvcse.core.ConciseAPI.*;
+import static com.todomvcse.core.CustomConditions.*;
 
 
 public class TaskManagerPage {
 
-    public List<WebElement> tasks = $$("#todo-list>li");
-    public WebElement newTodo = $("#new-todo");
+    private By tasks = By.cssSelector("#todo-list>li");
 
-    public void create(String... taskNames) {
-
-        for (String name : taskNames) {
-            newTodo.sendKeys(name + Keys.ENTER);
-        }
+    public void create(String taskName) {
+        $("#new-todo").sendKeys(taskName + Keys.ENTER);
     }
 
     public void toggle(String taskName) {
-        tasks.findBy(exactText(taskName)).find(".toggle").click();
+        $(tasks, taskName, By.cssSelector(".toggle")).click();
     }
 
     public void toggleAll() {
@@ -34,29 +30,34 @@ public class TaskManagerPage {
     }
 
     public void delete(String taskName) {
-        tasks.findBy(exactText(taskName)).hover();
-        tasks.findBy(exactText(taskName)).find(".destroy").click();
-    }
 
-    public void assertTasks(String... taskNames) {
-        tasks.shouldHave(exactTexts(taskNames));
+        WebElement focusOnDeletedTask = $(tasks, taskName);
+        Actions ac = new Actions(getDriver());
+        ac.moveToElement(focusOnDeletedTask).perform();
+        focusOnDeletedTask.findElement(By.cssSelector(".destroy")).click();
     }
 
     public void assertVisibleTasks(String... taskNames) {
-        tasks.filter(visible).shouldHave(exactTexts(taskNames));
+        assertThat(visibleTextOf(tasks, taskNames));
     }
 
+
     public void assertNoVisibleTasks() {
-        tasks.filter(visible).shouldBe(empty);
+        assert assertThat(sizeOfVisible(tasks)).size() == 0;
     }
 
     public void assertItemsLeft(int itemsLeft) {
-        $("#todo-count>strong").shouldHave(exactText(Integer.toString(itemsLeft)));
+        assertThat(elementHasText(By.cssSelector("#todo-count>strong"), Integer.toString(itemsLeft)));
     }
 
     public WebElement startEdit(String oldTaskName, String newTaskName) {
-        doubleClick(tasks.find(exactText(oldTaskName)).find(By.tagName("label")));
-        return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskName);
+
+        WebElement focusOnEditTask = $(tasks, oldTaskName);
+        Actions ac = new Actions(getDriver());
+        ac.doubleClick(focusOnEditTask)
+                .sendKeys(Keys.chord(Keys.CONTROL, "a") + Keys.DELETE)
+                .sendKeys(newTaskName).perform();
+        return focusOnEditTask;
     }
 
     public void filterAll() {

@@ -30,7 +30,7 @@ public class Preconditions {
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
-        if (getDriver().getCurrentUrl().equals(filter)) {
+        if (!getDriver().getCurrentUrl().equals(filter)) {
             open(filter);
         }
 

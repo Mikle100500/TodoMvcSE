@@ -7,7 +7,7 @@ import org.openqa.selenium.Keys;
 import static com.todomvcse.helpers.Preconditions.precondition;
 
 
-public class AtCompletedFilterTest extends BaseTest{
+public class AtCompletedFilterTest extends BaseTest {
 
     private TaskManagerPage page = new TaskManagerPage();
 
@@ -56,7 +56,7 @@ public class AtCompletedFilterTest extends BaseTest{
         precondition().completedTasks("a").activeTasks("b").completedTasks("c").atCompletedFilter().prepare();
 
         page.filterAll();
-        page.assertTasks("a", "b", "c");
+        page.assertVisibleTasks("a", "b", "c");
         page.assertItemsLeft(1);
     }
 

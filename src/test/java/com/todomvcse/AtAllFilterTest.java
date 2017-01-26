@@ -7,7 +7,7 @@ import org.openqa.selenium.Keys;
 import static com.todomvcse.helpers.Preconditions.precondition;
 
 
-public class AtAllFilterTest extends BaseTest{
+public class AtAllFilterTest extends BaseTest {
 
     private TaskManagerPage page = new TaskManagerPage();
 
@@ -17,7 +17,7 @@ public class AtAllFilterTest extends BaseTest{
         precondition().atAllFilter().prepare();
 
         page.create("a");
-        page.assertTasks("a");
+        page.assertVisibleTasks("a");
         page.assertItemsLeft(1);
     }
 
@@ -27,7 +27,7 @@ public class AtAllFilterTest extends BaseTest{
         precondition().activeTasks("a").atAllFilter().prepare();
 
         page.startEdit("a", "a edited").sendKeys(Keys.ENTER);
-        page.assertTasks("a edited");
+        page.assertVisibleTasks("a edited");
         page.assertItemsLeft(1);
     }
 
@@ -37,7 +37,7 @@ public class AtAllFilterTest extends BaseTest{
         precondition().activeTasks("a", "a to delete").atAllFilter().prepare();
 
         page.delete("a to delete");
-        page.assertTasks("a");
+        page.assertVisibleTasks("a");
         page.assertItemsLeft(1);
     }
 
@@ -47,7 +47,7 @@ public class AtAllFilterTest extends BaseTest{
         precondition().activeTasks("a", "b").atAllFilter().prepare();
 
         page.toggle("a");
-        page.assertTasks("a", "b");
+        page.assertVisibleTasks("a", "b");
         page.assertItemsLeft(1);
     }
 
@@ -57,7 +57,7 @@ public class AtAllFilterTest extends BaseTest{
         precondition().completedTasks("a").atAllFilter().prepare();
 
         page.toggle("a");
-        page.assertTasks("a");
+        page.assertVisibleTasks("a");
         page.assertItemsLeft(1);
     }
 
@@ -67,7 +67,7 @@ public class AtAllFilterTest extends BaseTest{
         precondition().activeTasks("a", "b").atAllFilter().prepare();
 
         page.toggleAll();
-        page.assertTasks("a", "b");
+        page.assertVisibleTasks("a", "b");
         page.assertItemsLeft(0);
     }
 
@@ -116,7 +116,7 @@ public class AtAllFilterTest extends BaseTest{
         precondition().activeTasks("a").atAllFilter().prepare();
 
         page.startEdit("a", "a edited").sendKeys(Keys.TAB);
-        page.assertTasks("a edited");
+        page.assertVisibleTasks("a edited");
         page.assertItemsLeft(1);
     }
 }
