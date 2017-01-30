@@ -1,13 +1,11 @@
 package com.todomvcse.core;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.todomvcse.core.CustomConditions.elementHasText;
-import static com.todomvcse.core.CustomConditions.waitParentElement;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class ConciseAPI {
@@ -26,6 +24,32 @@ public class ConciseAPI {
         getDriver().get(url);
     }
 
+    public static void executeJavaScript(String script) {
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript(script);
+    }
+
+    public static WebElement hover(WebElement element) {
+
+        Actions ac = new Actions(getDriver());
+        ac.moveToElement(element).perform();
+        return element;
+    }
+
+    public static void doubleClick(WebElement element) {
+
+        Actions ac = new Actions(getDriver());
+        ac.doubleClick(element).perform();
+    }
+
+    public static WebElement setValue(WebElement elementToSet, String value) {
+
+       elementToSet.clear();
+       elementToSet.sendKeys(value);
+       return elementToSet;
+    }
+
     public static WebElement $(By locator) {
         return assertThat(visibilityOfElementLocated(locator));
     }
@@ -34,12 +58,8 @@ public class ConciseAPI {
         return $(By.cssSelector(cssSelector));
     }
 
-    public static WebElement $(By elementsLocator, String text) {
-        return assertThat(elementHasText(elementsLocator, text));
-    }
-
-    public static WebElement $(By parentLocator, String text, By innerLocator) {
-        return assertThat(waitParentElement(parentLocator, text, innerLocator));
+    public static WebElement $(ExpectedCondition<WebElement> condition) {
+        return assertThat(condition);
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition, int timeout) {
