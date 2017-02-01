@@ -25,7 +25,7 @@ public class Preconditions {
 
     public void prepare() {
 
-        if (!getDriver().getCurrentUrl().equals(filter)) {
+        if (!url().equals(filter)) {
             open(filter);
         }
 

@@ -5,7 +5,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static com.todomvcse.core.CustomConditions.elementHasText;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class ConciseAPI {
@@ -24,30 +23,33 @@ public class ConciseAPI {
         getDriver().get(url);
     }
 
-    public static void executeJavaScript(String script) {
+    public static Actions action() { return new Actions(getDriver()); }
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript(script);
+    public static String url(){
+        return getDriver().getCurrentUrl();
+    }
+
+    public static void executeJavaScript(String script) {
+        ((JavascriptExecutor) getDriver()).executeScript(script);
     }
 
     public static WebElement hover(WebElement element) {
 
-        Actions ac = new Actions(getDriver());
-        ac.moveToElement(element).perform();
+        action().moveToElement(element).perform();
         return element;
     }
 
-    public static void doubleClick(WebElement element) {
+    public static WebElement doubleClick(WebElement element) {
 
-        Actions ac = new Actions(getDriver());
-        ac.doubleClick(element).perform();
+        action().doubleClick(element).perform();
+        return element;
     }
 
-    public static WebElement setValue(WebElement elementToSet, String value) {
+    public static WebElement setValue(WebElement elementToBeSet, String value) {
 
-       elementToSet.clear();
-       elementToSet.sendKeys(value);
-       return elementToSet;
+        elementToBeSet.clear();
+        elementToBeSet.sendKeys(value);
+        return elementToBeSet;
     }
 
     public static WebElement $(By locator) {
@@ -58,12 +60,14 @@ public class ConciseAPI {
         return $(By.cssSelector(cssSelector));
     }
 
-    public static WebElement $(ExpectedCondition<WebElement> condition) {
-        return assertThat(condition);
+    public static WebElement $(ExpectedCondition<WebElement> condition) { return assertThat(condition); }
+
+    public static WebElement $(ExpectedCondition<WebElement> condition, String cssSelector) {
+        return assertThat(condition).findElement(By.cssSelector(cssSelector));
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition, int timeout) {
-        return (new WebDriverWait(driver, timeout)).until(condition);
+        return (new WebDriverWait(getDriver(), timeout)).until(condition);
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition) {

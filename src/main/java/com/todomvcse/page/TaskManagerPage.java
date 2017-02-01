@@ -18,7 +18,7 @@ public class TaskManagerPage {
     }
 
     public void toggle(String taskName) {
-        $(elementHasText(tasks, taskName)).findElement(By.cssSelector(".toggle")).click();
+        $(elementHasText(tasks, taskName), ".toggle").click();
     }
 
     public void toggleAll() {
@@ -48,7 +48,7 @@ public class TaskManagerPage {
     public WebElement startEdit(String oldTaskName, String newTaskName) {
 
         doubleClick($(elementHasText(tasks, oldTaskName)));
-        WebElement editedElement = $(".editing").findElement(By.cssSelector(".edit"));
+        WebElement editedElement = $(elementHasCssClass(tasks, "editing"), ".edit");
         return setValue(editedElement, newTaskName);
     }
 
