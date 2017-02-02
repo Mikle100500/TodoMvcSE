@@ -1,8 +1,7 @@
 package com.todomvcse;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.junit.After;
+import org.junit.Before;
 
 import static com.todomvcse.core.ConciseAPI.getDriver;
 import static com.todomvcse.core.ConciseAPI.setDriver;
@@ -10,13 +9,13 @@ import static com.todomvcse.core.ConciseAPI.setDriver;
 
 public class BaseTest {
 
-    @BeforeClass
-    public static void setUp() {
-        setDriver(new FirefoxDriver());
+    @Before
+    public void setUp() {
+       setDriver();
     }
 
-    @AfterClass
-    public static void tearDown() {
+    @After
+    public void tearDown() {
         getDriver().quit();
     }
 }

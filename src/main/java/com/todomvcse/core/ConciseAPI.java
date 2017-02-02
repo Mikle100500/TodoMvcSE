@@ -1,22 +1,26 @@
 package com.todomvcse.core;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class ConciseAPI {
 
-    private static WebDriver driver;
+    private static Map<Thread, WebDriver> driver = new HashMap<>();
 
     public static WebDriver getDriver() {
-        return driver;
+        return driver.get(Thread.currentThread());
     }
 
-    public static void setDriver(WebDriver driver) {
-        ConciseAPI.driver = driver;
+    public static void setDriver() {
+        driver.put(Thread.currentThread(), new FirefoxDriver());
     }
 
     public static void open(String url) {
