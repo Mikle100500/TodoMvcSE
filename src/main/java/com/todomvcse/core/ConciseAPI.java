@@ -1,7 +1,9 @@
 package com.todomvcse.core;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,30 +15,30 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElem
 
 public class ConciseAPI {
 
-    private static Map<Thread, WebDriver> driver = new HashMap<>();
+    private static Map<Thread, WebDriver> drivers = new HashMap<>();
 
-    public static WebDriver getDriver() {
-        return driver.get(Thread.currentThread());
+    public static WebDriver getDrivers() {
+        return drivers.get(Thread.currentThread());
     }
 
-    public static void setDriver() {
-        driver.put(Thread.currentThread(), new FirefoxDriver());
+    public static void setDriver(WebDriver driver) {
+        drivers.put(Thread.currentThread(), driver);
     }
 
     public static void open(String url) {
-        getDriver().get(url);
+        getDrivers().get(url);
     }
 
     public static Actions actions() {
-        return new Actions(getDriver());
+        return new Actions(getDrivers());
     }
 
     public static String url() {
-        return getDriver().getCurrentUrl();
+        return getDrivers().getCurrentUrl();
     }
 
     public static void executeJavaScript(String script) {
-        ((JavascriptExecutor) getDriver()).executeScript(script);
+        ((JavascriptExecutor) getDrivers()).executeScript(script);
     }
 
     public static WebElement hover(WebElement element) {
@@ -75,7 +77,7 @@ public class ConciseAPI {
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition, int timeout) {
-        return (new WebDriverWait(getDriver(), timeout)).until(condition);
+        return (new WebDriverWait(getDrivers(), timeout)).until(condition);
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition) {
