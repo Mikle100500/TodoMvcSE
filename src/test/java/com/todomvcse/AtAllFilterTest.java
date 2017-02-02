@@ -58,7 +58,7 @@ public class AtAllFilterTest extends BaseTest {
 
         page.toggle("a");
         page.assertVisibleTasks("a");
-        page.assertItemsLeft(2);
+        page.assertItemsLeft(1);
     }
 
     @Test

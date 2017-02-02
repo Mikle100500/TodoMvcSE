@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 
 import static com.todomvcse.core.ConciseAPI.*;
 import static com.todomvcse.core.CustomConditions.*;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBe;
 
 
 public class TaskManagerPage {
@@ -42,7 +42,7 @@ public class TaskManagerPage {
     }
 
     public void assertItemsLeft(int itemsLeft) {
-        assertThat(visibilityOfElementLocated(By.cssSelector("#todo-count>strong")));
+        assertThat(textToBe(By.cssSelector("#todo-count>strong"), Integer.toString(itemsLeft)));
     }
 
     public WebElement startEdit(String oldTaskName, String newTaskName) {
