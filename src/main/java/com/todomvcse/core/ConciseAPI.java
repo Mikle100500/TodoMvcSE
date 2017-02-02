@@ -23,9 +23,11 @@ public class ConciseAPI {
         getDriver().get(url);
     }
 
-    public static Actions actions() { return new Actions(getDriver()); }
+    public static Actions actions() {
+        return new Actions(getDriver());
+    }
 
-    public static String url(){
+    public static String url() {
         return getDriver().getCurrentUrl();
     }
 
@@ -60,7 +62,9 @@ public class ConciseAPI {
         return $(By.cssSelector(cssSelector));
     }
 
-    public static WebElement $(ExpectedCondition<WebElement> condition) { return assertThat(condition); }
+    public static WebElement $(ExpectedCondition<WebElement> condition) {
+        return assertThat(condition);
+    }
 
     public static WebElement $(ExpectedCondition<WebElement> condition, String cssSelector) {
         return assertThat(condition).findElement(By.cssSelector(cssSelector));
