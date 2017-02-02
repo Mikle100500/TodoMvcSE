@@ -1,4 +1,4 @@
-package com.todomvcse.page;
+package com.todomvcse.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -42,7 +42,7 @@ public class TaskManagerPage {
     }
 
     public void assertItemsLeft(int itemsLeft) {
-        assertThat(visibilityOfElementLocated(By.cssSelector("#todo-count>strong")), itemsLeft);
+        assertThat(visibilityOfElementLocated(By.cssSelector("#todo-count>strong")));
     }
 
     public WebElement startEdit(String oldTaskName, String newTaskName) {

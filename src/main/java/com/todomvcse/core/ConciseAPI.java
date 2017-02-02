@@ -23,7 +23,7 @@ public class ConciseAPI {
         getDriver().get(url);
     }
 
-    public static Actions action() { return new Actions(getDriver()); }
+    public static Actions actions() { return new Actions(getDriver()); }
 
     public static String url(){
         return getDriver().getCurrentUrl();
@@ -35,13 +35,13 @@ public class ConciseAPI {
 
     public static WebElement hover(WebElement element) {
 
-        action().moveToElement(element).perform();
+        actions().moveToElement(element).perform();
         return element;
     }
 
     public static WebElement doubleClick(WebElement element) {
 
-        action().doubleClick(element).perform();
+        actions().doubleClick(element).perform();
         return element;
     }
 

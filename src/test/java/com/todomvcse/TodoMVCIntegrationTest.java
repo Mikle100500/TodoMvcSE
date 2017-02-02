@@ -1,6 +1,6 @@
 package com.todomvcse;
 
-import com.todomvcse.page.TaskManagerPage;
+import com.todomvcse.pages.TaskManagerPage;
 import org.junit.Test;
 
 import static com.todomvcse.helpers.Preconditions.precondition;

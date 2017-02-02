@@ -16,23 +16,20 @@ import static com.todomvcse.core.Wrappers.elementExceptionsCatcher;
 
 public class CustomConditions {
 
-    public static ExpectedCondition<WebElement> elementHasText(final By elementsLocator, final String elementText) {
+    public static ExpectedCondition<WebElement> elementHasText(final By elementsLocator, final String expectedText) {
         return elementExceptionsCatcher(new ExpectedCondition<WebElement>() {
 
-            private List<WebElement> elements;
             private List<String> textOfElements = new ArrayList<>();
-            private WebElement foundElement;
 
             public WebElement apply(WebDriver driver) {
 
-                elements = driver.findElements(elementsLocator);
+                List<WebElement> elements = driver.findElements(elementsLocator);
                 textOfElements.clear();
 
                 for (WebElement element : elements) {
                     textOfElements.add(element.getText());
-                    if (element.getText().equals(elementText)) {
-                        foundElement = element;
-                        return foundElement;
+                    if (element.getText().equals(expectedText)) {
+                        return element;
                     }
                 }
                 return null;
@@ -40,10 +37,10 @@ public class CustomConditions {
 
             public String toString() {
                 return String.format("\nList located by - %s"
-                                + "\nText should be: %s"
-                                + "\nActual texts are: %s\n"
+                                + "\nContains elements with exact text: %s"
+                                + "\nActual texts of list elements: %s\n"
                         , elementsLocator.toString()
-                        , elementText
+                        , expectedText
                         , textOfElements.toString()
                 );
             }
@@ -53,20 +50,21 @@ public class CustomConditions {
     public static ExpectedCondition<WebElement> elementHasCssClass(final By elementsLocator, final String cssClass) {
         return elementExceptionsCatcher(new ExpectedCondition<WebElement>() {
 
-            private List<WebElement> elements;
             private List<String> classOfElements = new ArrayList<>();
-            private WebElement foundElement;
 
             public WebElement apply(WebDriver driver) {
 
-                elements = driver.findElements(elementsLocator);
+                List<WebElement> elements = driver.findElements(elementsLocator);
                 classOfElements.clear();
 
                 for (WebElement element : elements) {
-                    classOfElements.add(element.getAttribute("class"));
-                    if (element.getAttribute("class").contains(cssClass)) {
-                        foundElement = element;
-                        return foundElement;
+                    String[] attributes = element.getAttribute("class").split("\\s+");
+
+                    for (String attribute : attributes) {
+                        classOfElements.add(attribute);
+                        if (attribute.equals(cssClass)) {
+                            return element;
+                        }
                     }
                 }
                 return null;
@@ -88,12 +86,11 @@ public class CustomConditions {
     public static ExpectedCondition<List<WebElement>> exactTextsOfVisible(final By elementsLocator, final String... texts) {
         return elementExceptionsCatcher(new ExpectedCondition<List<WebElement>>() {
 
-            private List<WebElement> elements;
             private List<String> textsOfVisible;
 
             public List<WebElement> apply(WebDriver driver) {
 
-                elements = driver.findElements(elementsLocator);
+                List<WebElement> elements = driver.findElements(elementsLocator);
                 textsOfVisible = getTextsOfVisible(elements);
 
                 if (textsOfVisible.size() != texts.length) {
@@ -110,7 +107,7 @@ public class CustomConditions {
 
             public String toString() {
                 return String.format("\nList found with locator - %s"
-                                + "\nshould contain text(s): %s"
+                                + "\nshould have text(s): %s"
                                 + "\nwhile actual text(s): %s\n"
                         , elementsLocator.toString()
                         , Arrays.toString(texts)
@@ -120,24 +117,23 @@ public class CustomConditions {
         });
     }
 
-    public static ExpectedCondition<Boolean> sizeOfVisible(final By locator, final int sizeOfVisibleToBe) {
+    public static ExpectedCondition<Boolean> sizeOfVisible(final By elementsLocator, final int sizeOfVisibleToBe) {
         return elementExceptionsCatcher(new ExpectedCondition<Boolean>() {
 
-            private List<WebElement> elements;
             private List<WebElement> visibleElements;
 
             public Boolean apply(WebDriver driver) {
 
-                elements = driver.findElements(locator);
+                List<WebElement> elements = driver.findElements(elementsLocator);
                 visibleElements = getVisibleElements(elements);
                 return visibleElements.size() == sizeOfVisibleToBe;
             }
 
             public String toString() {
-                return String.format("\nList found with locator - %s"
+                return String.format("\nList found with elementsLocator - %s"
                                 + "\nExpected size to be: %d"
                                 + "\nActual size is: %s"
-                        , locator.toString()
+                        , elementsLocator.toString()
                         , sizeOfVisibleToBe
                         , visibleElements.size()
                 );

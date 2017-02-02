@@ -1,6 +1,6 @@
 package com.todomvcse;
 
-import com.todomvcse.page.TaskManagerPage;
+import com.todomvcse.pages.TaskManagerPage;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 
@@ -58,7 +58,7 @@ public class AtAllFilterTest extends BaseTest {
 
         page.toggle("a");
         page.assertVisibleTasks("a");
-        page.assertItemsLeft(1);
+        page.assertItemsLeft(2);
     }
 
     @Test
