@@ -47,7 +47,7 @@ public class CustomConditions {
         });
     }
 
-    public static ExpectedCondition<WebElement> elementHasCssClass(final By elementsLocator, final String cssClass) {
+    public static ExpectedCondition<WebElement> elementHasCssClass(final By elementsLocator, final String cssClassToBe) {
         return elementExceptionsCatcher(new ExpectedCondition<WebElement>() {
 
             private List<String> classOfElements = new ArrayList<>();
@@ -58,11 +58,11 @@ public class CustomConditions {
                 classOfElements.clear();
 
                 for (WebElement element : elements) {
-                    String[] attributes = element.getAttribute("class").split("\\s+");
+                    String[] cssClasses = element.getAttribute("class").split("\\s+");
+                    classOfElements.add(element.getAttribute("class"));
 
-                    for (String attribute : attributes) {
-                        classOfElements.add(attribute);
-                        if (attribute.equals(cssClass)) {
+                    for (String cssClass : cssClasses) {
+                        if (cssClass.equals(cssClassToBe)) {
                             return element;
                         }
                     }
@@ -76,7 +76,7 @@ public class CustomConditions {
                                 + "\nShould be: %s"
                                 + "\nActual css classes are: %s\n"
                         , elementsLocator.toString()
-                        , cssClass
+                        , cssClassToBe
                         , classOfElements.toString()
                 );
             }
