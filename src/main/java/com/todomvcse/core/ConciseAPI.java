@@ -17,7 +17,7 @@ public class ConciseAPI {
 
     private static Map<Thread, WebDriver> drivers = new HashMap<>();
 
-    public static WebDriver getDrivers() {
+    public static WebDriver getDriver() {
         return drivers.get(Thread.currentThread());
     }
 
@@ -26,19 +26,19 @@ public class ConciseAPI {
     }
 
     public static void open(String url) {
-        getDrivers().get(url);
+        getDriver().get(url);
     }
 
     public static Actions actions() {
-        return new Actions(getDrivers());
+        return new Actions(getDriver());
     }
 
     public static String url() {
-        return getDrivers().getCurrentUrl();
+        return getDriver().getCurrentUrl();
     }
 
     public static void executeJavaScript(String script) {
-        ((JavascriptExecutor) getDrivers()).executeScript(script);
+        ((JavascriptExecutor) getDriver()).executeScript(script);
     }
 
     public static WebElement hover(WebElement element) {
@@ -77,7 +77,7 @@ public class ConciseAPI {
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition, int timeout) {
-        return (new WebDriverWait(getDrivers(), timeout)).until(condition);
+        return (new WebDriverWait(getDriver(), timeout)).until(condition);
     }
 
     public static <V> V assertThat(ExpectedCondition<V> condition) {
